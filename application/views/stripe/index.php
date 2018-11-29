@@ -12,12 +12,13 @@
 <body>
 	<div class="container">
 		<div class='row'>
+                    
 			<div class='col-md-4'></div>
 			<div class='col-md-4'>
 				<script src='https://js.stripe.com/v2/' type='text/javascript'></script>
-				<form accept-charset="UTF-8" action="/" class="require-validation"
+				<form accept-charset="UTF-8" action="<?=base_url()?>stripe/paynow" class="require-validation"
 					data-cc-on-file="false"
-					data-stripe-publishable-key="pk_test_ewz2N7d9aSXvjjQJNd8zpL0U"
+					data-stripe-publishable-key="<?=get_stripe_publickey();?>"
 					id="payment-form" method="post">
 					<!-- {{ csrf_field() }} -->
 					<div class='form-row'>

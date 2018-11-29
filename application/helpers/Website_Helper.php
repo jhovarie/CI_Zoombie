@@ -15,15 +15,13 @@ function include_bootstrap4() {
 }
 
 function include_paypal() {
-    $autoload = 'public/libs/ecommerce/PayPal-PHP-SDK/autoload.php';
-    if (file_exists($autoload)) {
-        include $autoload;
-    }
+    include 'public/libs/ecommerce/PayPal-PHP-SDK/autoload.php';
 }
 
-function include_stripe(){
-    $autoload = 'public/libs/ecommerce/stripe-php-6.23.0/init.php';
-    if (file_exists($autoload)) {
-        include $autoload;
-    }
+function include_stripe() {
+    include 'public/libs/ecommerce/stripe-php-6.23.0/init.php';
+}
+
+function include_passkey() {
+    include 'public/setup/passkey.php';
 }

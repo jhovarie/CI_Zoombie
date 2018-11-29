@@ -7,13 +7,16 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Paypal extends CI_Controller {
-
+    
      //sandbox barik
-    private $_clientid = "AV6eC1VsE-QMt-_wd3ib5V6efCyDMQH6VEKNL88tk7NcmfSkfqYEfzWuQf1L682MlinfRGoSmcm7_RM1";
-    private $_secret = "EPDb4pNqzMvrc0jY7p2gAcToLlD0eop5Sddpt8HEbzZalhey96gwM8TFXs9Nr5mitFALtl5tEsdyU4yq";
+    private $_clientid = "your paypal clientid";
+    private $_secret = "your paypal secret key";
     
     function __construct() {
         parent::__construct();
+        include_passkey(); 
+        $this->_clientid = get_paypal_clientid();
+        $this->_secret = get_paypal_secretkey();
     }
     
     function index(){

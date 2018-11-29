@@ -1,1 +1,4 @@
-myignore
+public/setup
+*.mp4
+*.mov
+*.log
