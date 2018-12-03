@@ -1,4 +1,1 @@
-public/setup
-*.mp4
-*.mov
-*.log
+/public/setup/passkey.php
