@@ -5,13 +5,27 @@
  *
  * @author jhovarie.guiang
  */
+
+function activetheme(){
+    $themename = 'bs3_default';
+    return base_url().'public/themes/'.$themename;
+}
+
 function include_bootstrap4() {
     echo '<meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="public/libs/uiframework/bootstrap4/css/bootstrap.min.css">
-  <script src="public/libs/uiframework/bootstrap4/jquery.min.js"></script>
-  <script src="public/libs/uiframework/bootstrap4/popper.min.js"></script>
-  <script src="public/libs/uiframework/bootstrap4/js/bootstrap.min.js"></script>';
+  <link rel="stylesheet" href="'.base_url().'public/libs/uiframework/bootstrap4/css/bootstrap.min.css">
+  <script src="'.base_url().'public/libs/uiframework/bootstrap4/jquery.min.js"></script>
+  <script src="'.base_url().'public/libs/uiframework/bootstrap4/popper.min.js"></script>
+  <script src="'.base_url().'public/libs/uiframework/bootstrap4/js/bootstrap.min.js"></script>';
+}
+
+function include_bootstrap3() {
+    echo '<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="'.base_url().'public/libs/uiframework/bootstrap3/css/bootstrap.min.css">
+  <script src="'.base_url().'public/libs/uiframework/bootstrap3/jquery.min.js"></script>
+  <script src="'.base_url().'public/libs/uiframework/bootstrap3/js/bootstrap.min.js"></script>';
 }
 
 function include_paypal() {

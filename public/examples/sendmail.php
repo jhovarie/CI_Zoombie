@@ -1,5 +1,5 @@
 <?php
-$config = Array(
+         $config = Array(
             'protocol' => 'smtp',
             'smtp_host' => 'ssl://smtp.googlemail.com',
             'smtp_port' => 465,

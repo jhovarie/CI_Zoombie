@@ -27,8 +27,8 @@ class Model_util extends CI_Model {
             $column1key => $column1val,
             $column2key => $column2val,
         );
-        $this->db->where($column1key, $data[$column1val]);
-        $this->db->where($column2key, $data[$column2val]);
+        $this->db->where($column1key, $data[$column1key]);
+        $this->db->where($column2key, $data[$column2key]);
         return $this->db->count_all_results($table) > 0 ? 1 : 0;
     }
 
@@ -58,9 +58,14 @@ class Model_util extends CI_Model {
         }
     }
 
+    function delete_table_row($table, $column, $value) {
+       return $this->db->delete($table, array($column => $value));
+    }
+    /*
     function delete_table_row($table, $id) {
         $this->db->delete($table, array('id' => $id));
     }
+    */
 
     //
 
@@ -88,6 +93,7 @@ class Model_util extends CI_Model {
           }
          */
     }
+   
 
     function search_record($table, $column, $keyword) {
         $this->db->like($column, $keyword);

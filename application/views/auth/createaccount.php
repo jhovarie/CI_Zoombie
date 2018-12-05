@@ -1,6 +1,8 @@
-<?php
-$this->load->view('inc/header');
-?>
+<?php $this->load->view('inc/header'); ?>
+
+<h3>Create Account</h3>
+<a href="<?=base_url()?>auth">Login</a>
+<br/><br/>
 <script type="text/javascript" src="<?=base_url()?>public/js/createaccount.js"></script>
 
 <form id="myform" action="<?=base_url().'auth/do_create_account'?>" method="post">

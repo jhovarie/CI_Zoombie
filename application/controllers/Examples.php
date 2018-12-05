@@ -9,6 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Examples extends CI_Controller {
     function index(){
        echo "This is examples ";
+       echo "<br><a href='".base_url()."index.php/bootstrap3'>Bootstrap 3</a>";
        echo "<br><a href='".base_url()."index.php/DBController'>Mysql CRUD</a>";
        echo "<br><a href='".base_url()."examples/sendmail'>SendMails</a>";
     }
@@ -16,6 +17,10 @@ class Examples extends CI_Controller {
     function sendmail(){
         echo "Send Mails<br/>";
         include 'public/examples/sendmail.php';
+    }
+    
+    function bootstrap3(){
+        echo "<h1>bootstrap 3</h1>";
     }
    
 }
