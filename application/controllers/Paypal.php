@@ -20,7 +20,8 @@ class Paypal extends CI_Controller {
     }
     
     function index(){
-        
+        echo "<h1>Paypal Example</h1>";
+        echo '<a href="'.base_url().'paypal/paynow">Pay Now</a>';
     }
 
     function paynow() {
@@ -69,7 +70,7 @@ class Paypal extends CI_Controller {
             echo $payment;
             echo "\n\nRedirect user to approval_url: " . $payment->getApprovalLink() . "\n";
             */
-           // redirect($payment->getApprovalLink());
+            redirect($payment->getApprovalLink());
         } catch (\PayPal\Exception\PayPalConnectionException $ex) {
             // This will print the detailed information on the exception.
             //REALLY HELPFUL FOR DEBUGGING

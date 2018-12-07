@@ -10,12 +10,18 @@ class Auth extends CI_Controller {
     }
     
     function index() {
-        if (isLogg()) {
-            redirect(base_url() . 'dashboard');
+        require_login('dashboard');
+        if($this->barik->getPreviousURL() == 0 && !isLogg()) {
+            redirect('auth/login');
+        } else if(isLogg()) {
+            redirect('dashboard');
         }
-        $this->load->view('auth/index');
     }
 
+    function login(){
+        $this->load->view('auth/index');
+    }
+    
     function create_account() {
         $this->load->view('auth/createaccount');
     }
@@ -55,7 +61,7 @@ class Auth extends CI_Controller {
         if ($this->model_users->login_users($email, $password)) {
             setLogg(true, $this->input->post('email'));
             setID($this->model_users->get_userid($this->input->post("email")));
-            redirect(base_url() . 'dashboard');
+            redirect(base_url() . getSESSION('tologin')); 
         } else {
             setLogg(false, '');
             echo "invalid username or password";
@@ -77,7 +83,7 @@ class Auth extends CI_Controller {
             $subject = "Reset Password Link";
             $emailbody = "here is your reset password link {$link}";
 
-            if ($this->sendmail($this->input->post("email"), $subject, $emailbody)) {
+            if ($this->barik->sendMail($this->input->post("email"), $subject, $emailbody)) {
                 $data = array(
                     'user_id' => $this->model_users->get_userid($this->input->post("email")), //convert email to user_id
                     'codes' => $randomcode,
@@ -91,28 +97,6 @@ class Auth extends CI_Controller {
         } else {
             echo "Email Not Exists";
         }
-    }
-
-    function sendmail($mailto, $subject, $body) {
-        $config = Array(
-            'protocol' => 'smtp',
-            'smtp_host' => 'ssl://smtp.googlemail.com',
-            'smtp_port' => 465,
-            'smtp_user' => get_gmail_email(),
-            'smtp_pass' => get_gmail_pass(),
-            'mailtype' => 'html',
-            'charset' => 'iso-8859-1'
-        );
-        $this->load->library('email', $config);
-        $this->email->set_newline("\r\n");
-        //Set to, from, message, etc.
-        $this->email->from(get_gmail_email(), get_gmail_displayname());
-        $this->email->to($mailto);
-
-        $this->email->subject($subject);
-        $this->email->message($body);
-        // echo $this->email->print_debugger();
-        return $this->email->send();
     }
 
     function newpassword($userid, $codes) {

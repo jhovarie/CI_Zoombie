@@ -29,3 +29,9 @@
         height: 400px;
      }
 }
+
+@media only screen and (max-width: 414px) {
+    .center-cropped {
+        height: 200px;
+     }
+}

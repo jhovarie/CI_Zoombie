@@ -11,6 +11,18 @@ function activetheme(){
     return base_url().'public/themes/'.$themename;
 }
 
+function require_login($tologin = 'dashboard'){
+    //include 'public/php/login.php';
+    setSESSION('tologin',$tologin);
+    if(!isLogg()) {
+        redirect(base_url().'auth/login');
+    } 
+}
+
+function include_php_script($filename){
+    include 'public/php/'.$filename.'.php';
+}
+
 function include_bootstrap4() {
     echo '<meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">

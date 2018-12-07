@@ -1,14 +1,23 @@
 <?php
 
-/*
-  function getEmail(); //return tring
-  function getID(); //return string //return user id
-  function isLogg(); //return boolean check if loggin or not
-  function setID($id); // void
-  function setLogg($b,$email); { //set 1 if loggin or 0 if loggout
- */
+include 'public/php/mod_ci_lib.php';
 
-//------------------------------------------------------------------------------------
+function setToken() {
+    $barik = new Barik();
+    $token = $barik->randomAlphaNumeric(10);
+    $data = array(
+        'ci_zoombie_token' => $token
+    );
+    set_userdata($data);
+    return "<input type='hidden' id='ci_zoombie_token' name='ci_zoombie_token' value='{$token}'/> ";
+}
+
+function checkToken($msg = "token mismatch") {
+    if (@$_POST['ci_zoombie_token'] != userdata('ci_zoombie_token')) {
+        echo $msg;
+        return;
+    }
+}
 
 function getEmail() {
     return userdata('email');
@@ -23,53 +32,25 @@ function isLogg() {
 }
 
 function setID($id) {
-    $newdata = array(
-        'user_id' => $id,
-    );
+    $newdata = array('user_id' => $id);
     set_userdata($newdata);
 }
 
 function setLogg($b, $email) {
     if ($b == 1 || $b == true) {
-        $newdata = array(
-            'email' => $email,
-            'logged_in' => TRUE
-        );
+        $newdata = array('email' => $email, 'logged_in' => TRUE);
         set_userdata($newdata);
     } else {
-        $newdata = array(
-            'email' => '',
-            'logged_in' => FALSE
-        );
+        $newdata = array('email' => '', 'logged_in' => FALSE);
         set_userdata($newdata);
     }
 }
 
-//--------------
-function set_userdata($data, $value = NULL) {
-    if (is_array($data)) {
-        foreach ($data as $key => &$value) {
-            $_SESSION[$key] = $value;
-        }
-        return;
-    }
-    $_SESSION[$data] = $value;
+function setSESSION($key, $val) {
+    $newdata = array($key => $val);
+    set_userdata($newdata);
 }
 
-function userdata($key = NULL) {
-    if (isset($key)) {
-        return isset($_SESSION[$key]) ? $_SESSION[$key] : NULL;
-    } elseif (empty($_SESSION)) {
-        return array();
-    }
-    $userdata = array();
-    $_exclude = array_merge(
-            array('__ci_vars'), $this->get_flash_keys(), $this->get_temp_keys()
-    );
-    foreach (array_keys($_SESSION) as $key) {
-        if (!in_array($key, $_exclude, TRUE)) {
-            $userdata[$key] = $_SESSION[$key];
-        }
-    }
-    return $userdata;
+function getSESSION($key) {
+    return userdata($key);
 }

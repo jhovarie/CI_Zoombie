@@ -7,17 +7,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
  */
 
 class Examples extends CI_Controller {
+    
+    function __construct() {
+        parent::__construct();
+        require_login('examples'); 
+    }
+    
     function index(){
-       echo "This is examples ";
-       echo "<br><a href='".base_url()."index.php/bootstrap3'>Bootstrap 3</a>";
-       echo "<br><a href='".base_url()."index.php/DBController'>Mysql CRUD</a>";
-       echo "<br><a href='".base_url()."examples/sendmail'>SendMails</a>";
+       $this->load->view('examples/index');
     }
     
     function sendmail(){
         echo "Send Mails<br/>";
+        echo "<a href='".base_url()."index.php/examples/sendmailnow'>Send Mail Now</a>";
+        
+    }
+    function sendmailnow(){
         include 'public/examples/sendmail.php';
     }
+    
     
     function bootstrap3(){
         echo "<h1>bootstrap 3</h1>";
