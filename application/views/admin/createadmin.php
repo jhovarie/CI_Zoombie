@@ -4,6 +4,7 @@ $this->load->view('inc/header');
 <script type="text/javascript" src="<?=base_url()?>public/js/createaccount.js"></script>
 
 <form id="myform" action="<?=base_url().'setup/createadmin_store'?>" method="post">
+    <?=setToken()?>
     Email = <input type="text" id="email" name="email" required onkeyup="checkAllowCreateAccount()"/><br/>
     password = <input type="password" id="password" name="password" required onkeyup="checkAllowCreateAccount()"/><br/>
     Confirm = <input type="password" id="confirm_password" name="confirm_password" required onkeyup="checkAllowCreateAccount()"/><br/><br/>

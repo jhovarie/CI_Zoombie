@@ -1,5 +1,4 @@
 <?php $this->load->view('inc/header'); ?>
-
 <script>
     function checkEmailIfValid() {
         var email = $('#email').val();
@@ -13,7 +12,8 @@
     }
 </script>
 
-<form id="myform" action="<?= base_url() . 'auth/send_reset_password_link' ?>" method="post">
+<form id="myform" action="<?=base_url() . 'auth/send_reset_password_link' ?>" method="post">
+    <?=setToken()?>
     Email = <input type="text" id="email" name="email" required onkeyup="checkEmailIfValid()"/><br/>
     <input id="btnresetnow" type="submit" value="Submit" disabled>
     <br>

@@ -14,6 +14,7 @@ class Paypal extends CI_Controller {
     
     function __construct() {
         parent::__construct();
+        require 'vendor/autoload.php';
         include_passkey(); 
         $this->_clientid = get_paypal_clientid();
         $this->_secret = get_paypal_secretkey();
@@ -25,7 +26,7 @@ class Paypal extends CI_Controller {
     }
 
     function paynow() {
-        include_paypal();
+        //include_paypal();
         // $this->load->view('home/index');
         // After Step 1
         
@@ -86,11 +87,9 @@ class Paypal extends CI_Controller {
     function paymentsuccess() {
         echo "Payment is success";
         echo "<hr/>";
-        
         //?paymentId=
         if($this->barik->isContains($this->barik->getCurrentURL(),"?paymentId=")) {
             
         }
     }
-
 }

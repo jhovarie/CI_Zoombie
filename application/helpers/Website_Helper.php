@@ -40,14 +40,6 @@ function include_bootstrap3() {
   <script src="'.base_url().'public/libs/uiframework/bootstrap3/js/bootstrap.min.js"></script>';
 }
 
-function include_paypal() {
-    include 'public/libs/ecommerce/PayPal-PHP-SDK/autoload.php';
-}
-
-function include_stripe() {
-    include 'public/libs/ecommerce/stripe-php-6.23.0/init.php';
-}
-
 function include_passkey() {
     include 'public/setup/passkey.php';
 }

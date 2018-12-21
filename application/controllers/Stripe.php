@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Description of Stripe
  *
@@ -11,7 +10,7 @@ class Stripe extends CI_Controller {
 
     function __construct() {
         parent::__construct();
-        include_stripe();
+        require 'vendor/autoload.php';
         include_passkey(); 
     }
 

@@ -8,27 +8,28 @@ class Auth extends CI_Controller {
         parent::__construct();
         include_passkey();
     }
-    
+
     function index() {
         require_login('dashboard');
-        if($this->barik->getPreviousURL() == 0 && !isLogg()) {
+        if ($this->barik->getPreviousURL() == 0 && !isLogg()) {
             redirect('auth/login');
-        } else if(isLogg()) {
+        } else if (isLogg()) {
             redirect('dashboard');
         }
     }
 
-    function login(){
+    function login() {
         $this->load->view('auth/index');
     }
-    
+
     function create_account() {
         $this->load->view('auth/createaccount');
     }
 
     function do_create_account() {
+        checkToken();
         $this->load->library('barikcrypt');
-        if ($this->barik->getPreviousURL() == base_url() . "auth/create_account/" ||
+        if (strtolower($this->barik->getPreviousURL()) == strtolower(base_url()) . "index.php/auth/create_account" ||
                 $this->barik->getPreviousURL() == base_url() . "auth/create_account") {
             //$this->load->model('model_users');
             if ($this->model_users->is_email_exists($this->input->post('email'))) {
@@ -54,17 +55,21 @@ class Auth extends CI_Controller {
     }
 
     function dologin() {
-        $this->load->library('barikcrypt');
-        $this->load->model('model_users');
-        $email = $this->input->post('email');
-        $password = $this->barikcrypt->encrypt($this->input->post('password'));
-        if ($this->model_users->login_users($email, $password)) {
-            setLogg(true, $this->input->post('email'));
-            setID($this->model_users->get_userid($this->input->post("email")));
-            redirect(base_url() . getSESSION('tologin')); 
-        } else {
-            setLogg(false, '');
-            echo "invalid username or password";
+        checkToken();
+        if (strtolower($this->barik->getPreviousURL()) == strtolower(base_url()) . "index.php/auth/login" ||
+                $this->barik->getPreviousURL() == base_url() . "auth/login") {
+            $this->load->library('barikcrypt');
+            $this->load->model('model_users');
+            $email = $this->input->post('email');
+            $password = $this->barikcrypt->encrypt($this->input->post('password'));
+            if ($this->model_users->login_users($email, $password)) {
+                setLogg(true, $this->input->post('email'));
+                setID($this->model_users->get_userid($this->input->post("email")));
+                redirect(base_url() . getSESSION('tologin'));
+            } else {
+                setLogg(false, '');
+                echo "invalid username or password";
+            }
         }
     }
 
@@ -73,29 +78,34 @@ class Auth extends CI_Controller {
     }
 
     function send_reset_password_link() {
-        if ($this->model_users->is_email_exists($this->input->post("email"))) {
-            // echo "<br>Email is ".$this->input->post("email");
-            //echo "<br>".$this->barik->randomNumber(6);
-            $randomcode = $this->barik->randomNumber(6);
-            $userid = $this->model_users->get_userid($this->input->post("email"));
-            $link = base_url() . "index.php/auth/newpassword/{$userid}/{$randomcode}";
+        //auth/reset_password
+        checkToken();
+        if (strtolower($this->barik->getPreviousURL()) == strtolower(base_url()) . "index.php/auth/reset_password" ||
+                $this->barik->getPreviousURL() == base_url() . "auth/reset_password") {
+            if ($this->model_users->is_email_exists($this->input->post("email"))) {
+                // echo "<br>Email is ".$this->input->post("email");
+                //echo "<br>".$this->barik->randomNumber(6);
+                $randomcode = $this->barik->randomNumber(6);
+                $userid = $this->model_users->get_userid($this->input->post("email"));
+                $link = base_url() . "index.php/auth/newpassword/{$userid}/{$randomcode}";
 
-            $subject = "Reset Password Link";
-            $emailbody = "here is your reset password link {$link}";
+                $subject = "Reset Password Link";
+                $emailbody = "here is your reset password link {$link}";
 
-            if ($this->barik->sendMail($this->input->post("email"), $subject, $emailbody)) {
-                $data = array(
-                    'user_id' => $this->model_users->get_userid($this->input->post("email")), //convert email to user_id
-                    'codes' => $randomcode,
-                    'forwhat' => 'resetpassword'
-                );
-                $this->model_util->insert_record('confirmcodes', $data);
-                echo "<br>We send activation link to your email..";
+                if ($this->barik->sendMail($this->input->post("email"), $subject, $emailbody)) {
+                    $data = array(
+                        'user_id' => $this->model_users->get_userid($this->input->post("email")), //convert email to user_id
+                        'codes' => $randomcode,
+                        'forwhat' => 'resetpassword'
+                    );
+                    $this->model_util->insert_record('confirmcodes', $data);
+                    echo "<br>We send activation link to your email..";
+                } else {
+                    echo "Failed To Send Mail";
+                }
             } else {
-                echo "Failed To Send Mail";
+                echo "Email Not Exists";
             }
-        } else {
-            echo "Email Not Exists";
         }
     }
 
@@ -118,7 +128,7 @@ class Auth extends CI_Controller {
         $newpass = $this->barikcrypt->encrypt($this->input->post('password'));
         if ($this->model_users->changepassword($this->input->post('email'), $newpass)) {
             echo "Password is Successfuly Change";
-            $this->model_util->delete_table_row('confirmcodes','codes',$this->input->post('codes'));
+            $this->model_util->delete_table_row('confirmcodes', 'codes', $this->input->post('codes'));
         } else {
             echo "Password Not Change";
         }

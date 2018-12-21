@@ -17,8 +17,9 @@ class Setup extends CI_Controller {
     }
 
     function createadmin_store() {
-        if ($this->barik->getPreviousURL() == base_url() . "setup/" ||
-             $this->barik->getPreviousURL() == base_url() . "setup") {
+        checkToken();
+        if (strtolower($this->barik->getPreviousURL()) == strtolower(base_url()) . "index.php/setup" ||
+             strtolower($this->barik->getPreviousURL()) == strtolower(base_url()) . "setup") {
              $this->load->library('barikcrypt');
 
             echo $this->input->post('email');
